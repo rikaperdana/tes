@@ -1,0 +1,43 @@
+﻿@model IEnumerable<WebSample.Models.negara>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Daftar Negara</h2>
+<br />
+<form method="get" action="@Url.Action("Index")">
+<fieldset>
+    Cari Negara:
+    <input type="text" name="keyword" placeholder="masukkan nama negara"/>
+    <input type="submit" value="submit" class="btn btn-success"/>
+</fieldset>
+</form>"
+
+<br />
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            Nama Negara
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.NamaNegara)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.NegaraId }) |
+            @Html.ActionLink("Details", "Details", new { id=item.NegaraId }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.NegaraId })
+        </td>
+    </tr>
+}
+
+</table>

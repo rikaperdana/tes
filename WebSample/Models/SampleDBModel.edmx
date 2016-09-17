@@ -1,0 +1,198 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="SampleDBModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="kota">
+          <Key>
+            <PropertyRef Name="KotaId" />
+          </Key>
+          <Property Name="KotaId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="NegaraId" Type="int" Nullable="false" />
+          <Property Name="NamaKota" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="mahasiswa">
+          <Key>
+            <PropertyRef Name="nim" />
+          </Key>
+          <Property Name="nim" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="KotaId" Type="int" />
+          <Property Name="nama" Type="varchar" MaxLength="50" />
+          <Property Name="alamat" Type="varchar" MaxLength="50" />
+          <Property Name="ipk" Type="float" />
+        </EntityType>
+        <EntityType Name="negara">
+          <Key>
+            <PropertyRef Name="NegaraId" />
+          </Key>
+          <Property Name="NegaraId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="NamaNegara" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <Association Name="FK_kota_kota">
+          <End Role="negara" Type="Self.negara" Multiplicity="1" />
+          <End Role="kota" Type="Self.kota" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="negara">
+              <PropertyRef Name="NegaraId" />
+            </Principal>
+            <Dependent Role="kota">
+              <PropertyRef Name="NegaraId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_mahasiswa_kota">
+          <End Role="kota" Type="Self.kota" Multiplicity="0..1" />
+          <End Role="mahasiswa" Type="Self.mahasiswa" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="kota">
+              <PropertyRef Name="KotaId" />
+            </Principal>
+            <Dependent Role="mahasiswa">
+              <PropertyRef Name="KotaId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="SampleDBModelStoreContainer">
+          <EntitySet Name="kota" EntityType="Self.kota" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="mahasiswa" EntityType="Self.mahasiswa" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="negara" EntityType="Self.negara" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_kota_kota" Association="Self.FK_kota_kota">
+            <End Role="negara" EntitySet="negara" />
+            <End Role="kota" EntitySet="kota" />
+          </AssociationSet>
+          <AssociationSet Name="FK_mahasiswa_kota" Association="Self.FK_mahasiswa_kota">
+            <End Role="kota" EntitySet="kota" />
+            <End Role="mahasiswa" EntitySet="mahasiswa" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="SampleDBModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="kota">
+          <Key>
+            <PropertyRef Name="KotaId" />
+          </Key>
+          <Property Name="KotaId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="NegaraId" Type="Int32" Nullable="false" />
+          <Property Name="NamaKota" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="negara" Relationship="Self.FK_kota_kota" FromRole="kota" ToRole="negara" />
+          <NavigationProperty Name="mahasiswas" Relationship="Self.FK_mahasiswa_kota" FromRole="kota" ToRole="mahasiswa" />
+        </EntityType>
+        <EntityType Name="mahasiswa">
+          <Key>
+            <PropertyRef Name="nim" />
+          </Key>
+          <Property Name="nim" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="KotaId" Type="Int32" />
+          <Property Name="nama" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="alamat" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="ipk" Type="Double" />
+          <NavigationProperty Name="kota" Relationship="Self.FK_mahasiswa_kota" FromRole="mahasiswa" ToRole="kota" />
+        </EntityType>
+        <EntityType Name="negara">
+          <Key>
+            <PropertyRef Name="NegaraId" />
+          </Key>
+          <Property Name="NegaraId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="NamaNegara" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="kotas" Relationship="Self.FK_kota_kota" FromRole="negara" ToRole="kota" />
+        </EntityType>
+        <Association Name="FK_kota_kota">
+          <End Role="negara" Type="Self.negara" Multiplicity="1" />
+          <End Role="kota" Type="Self.kota" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="negara">
+              <PropertyRef Name="NegaraId" />
+            </Principal>
+            <Dependent Role="kota">
+              <PropertyRef Name="NegaraId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_mahasiswa_kota">
+          <End Role="kota" Type="Self.kota" Multiplicity="0..1" />
+          <End Role="mahasiswa" Type="Self.mahasiswa" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="kota">
+              <PropertyRef Name="KotaId" />
+            </Principal>
+            <Dependent Role="mahasiswa">
+              <PropertyRef Name="KotaId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="SampleDBEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="kotas" EntityType="Self.kota" />
+          <EntitySet Name="mahasiswas" EntityType="Self.mahasiswa" />
+          <EntitySet Name="negaras" EntityType="Self.negara" />
+          <AssociationSet Name="FK_kota_kota" Association="Self.FK_kota_kota">
+            <End Role="negara" EntitySet="negaras" />
+            <End Role="kota" EntitySet="kotas" />
+          </AssociationSet>
+          <AssociationSet Name="FK_mahasiswa_kota" Association="Self.FK_mahasiswa_kota">
+            <End Role="kota" EntitySet="kotas" />
+            <End Role="mahasiswa" EntitySet="mahasiswas" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="SampleDBModelStoreContainer" CdmEntityContainer="SampleDBEntities">
+          <EntitySetMapping Name="kotas">
+            <EntityTypeMapping TypeName="SampleDBModel.kota">
+              <MappingFragment StoreEntitySet="kota">
+                <ScalarProperty Name="KotaId" ColumnName="KotaId" />
+                <ScalarProperty Name="NegaraId" ColumnName="NegaraId" />
+                <ScalarProperty Name="NamaKota" ColumnName="NamaKota" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="mahasiswas">
+            <EntityTypeMapping TypeName="SampleDBModel.mahasiswa">
+              <MappingFragment StoreEntitySet="mahasiswa">
+                <ScalarProperty Name="nim" ColumnName="nim" />
+                <ScalarProperty Name="KotaId" ColumnName="KotaId" />
+                <ScalarProperty Name="nama" ColumnName="nama" />
+                <ScalarProperty Name="alamat" ColumnName="alamat" />
+                <ScalarProperty Name="ipk" ColumnName="ipk" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="negaras">
+            <EntityTypeMapping TypeName="SampleDBModel.negara">
+              <MappingFragment StoreEntitySet="negara">
+                <ScalarProperty Name="NegaraId" ColumnName="NegaraId" />
+                <ScalarProperty Name="NamaNegara" ColumnName="NamaNegara" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

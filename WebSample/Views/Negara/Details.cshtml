@@ -1,0 +1,26 @@
+﻿@model WebSample.Models.negara
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>negara</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.NamaNegara)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.NamaNegara)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.NegaraId }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>
